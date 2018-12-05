@@ -45,7 +45,7 @@ function RGB = imoverlay(X,map,varargin)
 %   25/12/2015, ver 1.00
 %   26/12/2015, ver 1.01, bug fix for custom ColorMap
 %
-%   Jing Lou (Â¥¾º), http://www.loujing.com
+%   Jing Lou (Â¥ï¿½ï¿½), http://www.loujing.com
 %
 
 narginchk(2, inf);

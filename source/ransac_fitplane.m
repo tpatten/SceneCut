@@ -24,7 +24,7 @@ color_model = [c_mean, c_std];
 
 % Remove invalid_depth pixels
 z = pointcloud(:,3);
-invalid_depth = z == 0;
+invalid_depth = (z == 0);
 pointcloud(invalid_depth,:) = [];
 noise_ths(invalid_depth) = [];
 
@@ -53,6 +53,8 @@ end
 if size(inliers,1) < 3
     plane_model  = [];
     outlier_ratio = 0;
+    plane_area = 0;
+    disp('Inliers less than 3');
     return;
 end
 

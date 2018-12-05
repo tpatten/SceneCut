@@ -1,0 +1,54 @@
+# Need to set paths to fix mex errors
+export LD_PRELOAD=$LD_PRELOAD:/usr/lib/x86_64-linux-gnu/libstdc++.so.6:/usr/lib/x86_64-linux-gnu/libprotobuf.so.9
+
+# Open matlab
+matlab
+
+# In COB, if need to compute ucms need to run install (it adds paths)
+install
+
+# In COB, need to build for very first time (other times it is already built and so not necessary)
+build
+
+# Load the image
+I = imread('/home/tpatten/Data/EasyLabel/test_images/frame0000.jpg');
+
+# Compute ucm
+[ucm2, ucms, ~, O, E] = im2ucm(I);
+save something.mat ucm2
+
+# Compute features and tree
+[tree, b_feats] = ucm2tree(ucm2);
+save something.mat tree b_feats
+
+# Save .pcd to .mat
+ptCloud = pcread('test_data/pointcloud/table_005.pcd');
+pc = ptCloud.Location;
+save something.mat pc
+
+# Run SceneCut
+demo_easylabel
+
+
+
+
+# For GraphCut method need to convert image to .ppm
+convert image.jpg image.ppm
+
+# Run GraphCut with parameters
+./segment 0.5 800 200 ~/Code/SceneCut/test_data/images/img_000.ppm seg.ppm
+
+# In painting Depth image
+I_rgb = imread('/home/tpatten/Data/EasyLabel/rectified_aligned/rgb.png');
+I_dep = imread('/home/tpatten/Data/EasyLabel/rectified_aligned/depth.png');
+I_fill = fill_depth_cross_bf(I_rgb, im2double(I_dep));
+
+# Get HHA image
+C = [1, 0, 0; 0, 1, 0; 0, 0, 1];
+hha = saveHHA([], C, [], I_fill, I_dep);
+im = cat(3, I_rgb, hha);
+
+
+
+# ERROR
+F0907 10:38:32.398329 22347 base_conv_layer.cpp:114] Check failed: bottom[0]->channels() == channels_ (6 vs. 3) Input size incompatible with convolution kernel.

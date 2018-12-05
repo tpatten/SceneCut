@@ -25,6 +25,8 @@ color_models = zeros(100,6);
 
 Z = pointcloud(:,3)';
 noise_ths   = 0.02 + 0.005*(Z-0.4).^2;
+disp(['Size of pc    : ', num2str(size(pointcloud))]);
+disp(['Size of image : ', num2str(size(img))]);
 points_homo = [pointcloud, ones(num_pixels, 1)]';
 count = 0;
 for n=1:num_nodes
